@@ -8,16 +8,16 @@ import java.util.Scanner;
 public class Cliente{
     public static void main(String[] args) {
         try (Socket socket = new Socket("localhost", 5000);
-             PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+             PrintWriter salida = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+             BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
              Scanner scanner = new Scanner(System.in, "UTF-8")) {
             
             System.out.println("=== Sistema Municipal ===");
             System.out.print("Ingrese credenciales (usuario:password): ");
             String credenciales = scanner.nextLine();
             
-            out.println(credenciales);
-            String respuesta = in.readLine();
+            salida.println(credenciales);
+            String respuesta = entrada.readLine();
             
             System.out.println("Respuesta del servidor: " + respuesta);
             System.out.println("===============");

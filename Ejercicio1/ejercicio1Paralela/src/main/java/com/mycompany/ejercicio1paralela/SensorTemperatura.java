@@ -19,8 +19,7 @@ public class SensorTemperatura extends Thread {
             System.out.println("Sensor " + idSensor + " registra: " + temperatura + "°C");
 
             if (temperatura > 100) {
-                System.out.println(">>> Sensor " + idSensor
-                        + " detenido por sobrecalentamiento: " + temperatura + "°C");
+                System.out.println(" Sensor " + idSensor + " detenido por sobrecalentamiento: " + temperatura + "°C");
                 activo = false;
             } else {
                 esperarUnInstante();

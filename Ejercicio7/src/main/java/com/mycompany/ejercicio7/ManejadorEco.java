@@ -3,7 +3,7 @@ package com.mycompany.ejercicio7;
 import java.io.*;
 import java.net.Socket;
 
-public class ManejadorEco implements Runnable { // Implementamos Runnabe para comprometer a la clase a ser multi-hilo
+public class ManejadorEco implements Runnable { // Runnabe para comprometer a la clase a ser multi-hilo
     private final Socket socket;
 
     public ManejadorEco(Socket socket) {

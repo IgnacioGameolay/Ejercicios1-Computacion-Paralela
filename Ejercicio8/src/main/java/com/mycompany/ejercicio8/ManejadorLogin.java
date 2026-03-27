@@ -15,19 +15,19 @@ class ManejadorLogin implements Runnable {
     @Override
     public void run() {
         try (
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-            PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true)
+            BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            PrintWriter salida = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true)
         ) {
-            String textoCredenciales = in.readLine();
+            String textoCredenciales = entrada.readLine();
             
             if (formatoValido(textoCredenciales)) {
                 if (textoCredenciales.equals(CREDENCIALES_VALIDAS)) {
-                    out.println("OK");
+                    salida.println("OK");
                 } else {
-                    out.println("ERROR");
+                    salida.println("ERROR");
                 }
             } else {
-                out.println("ERROR: Formato incorrecto (usuario:password)");
+                salida.println("ERROR: Formato incorrecto (usuario:password)");
             }
 
         } catch (SocketException e) {
