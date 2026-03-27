@@ -5,25 +5,32 @@ public class Bodega {
         Recurso grua    = new Recurso("Grúa");
         Recurso escaner = new Recurso("Escáner");
 
-        // Deadlock
-        System.out.println("=== CON DEADLOCK ===");
+        // Deadlock 
+        System.out.println("=== Con Deadlock ===");
         Thread tA = new Thread(new Operador("Operador A", grua, escaner));
         Thread tB = new Thread(new Operador("Operador B", escaner, grua));
+        
         tA.start(); tB.start();
 
-        Thread.sleep(500);
-        tA.interrupt(); tB.interrupt();
+        tA.join(1000);
+        tB.join(1000);
 
-        // Reset
-        tA.join(1000);  tB.join(1000);
-        System.out.println(">>> Deadlock detectado.\n");
+        if (tA.isAlive() || tB.isAlive()) { // Si siguen corriendo, isAlive() verifica y pasan a ser interrumpidos
+            System.out.println("Se ha detectado Deadlock.\n");
+            tA.interrupt();
+            tB.interrupt();
+        }
 
-        // No deadlock
-        System.out.println("=== SIN DEADLOCK ===");
+        // Se reutilizan los mismos recursos para segundo ejemplo
+        grua    = new Recurso("Grúa");
+        escaner = new Recurso("Escáner");
+
+        // Sin deadlock
+        System.out.println("=== Sin Deadlock ===");
         Thread tC = new Thread(new Operador("Operador A", grua, escaner));
         Thread tD = new Thread(new Operador("Operador B", grua, escaner));
         tC.start(); tD.start();
         tC.join();  tD.join();
-        System.out.println(">>> Ambos completaron su tarea. ✅");
+        System.out.println("Los operadores han completado sus tareas.");
     }
 }

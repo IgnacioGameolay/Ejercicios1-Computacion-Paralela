@@ -1,6 +1,6 @@
 package Ejercicio6;
 
-public class Operador implements Runnable {
+public class Operador implements Runnable { // Operador
     private final String nombre;
     private final Recurso primero;
     private final Recurso segundo;
@@ -13,21 +13,19 @@ public class Operador implements Runnable {
 
     @Override
     public void run() {
-        try {
-            primero.adquirir();
+        synchronized (primero) { // Primero se consigue x recurso
+            System.out.printf("%s ha conseguido %s%n", nombre, primero.getNombre());
             try {
-                System.out.printf("%s adquirió %s%n", nombre, primero.getNombre());
                 Thread.sleep(100);
-                System.out.printf("%s espera %s...%n", nombre, segundo.getNombre());
-                segundo.adquirir();
-                try {
-                    System.out.printf("%s completó la tarea. ✅%n", nombre);
-                } finally { segundo.liberar(); }
-            } finally { primero.liberar(); }
-        } catch (InterruptedException e) {
-            System.out.printf("%s interrumpido — liberando recursos.%n", nombre);
-            primero.liberar();
-            segundo.liberar();
+            } catch (InterruptedException e) { // Si no se consigue..
+                Thread.currentThread().interrupt();
+                System.out.printf("%s ha sido interrumpido, se procede a liberar recursos..%n", nombre);
+                return;
+            }
+            System.out.printf("%s está esperando %s...%n", nombre, segundo.getNombre());
+            synchronized (segundo) { // Se consigue segundo recurso, y se asume tarea completa
+                System.out.printf("%s ha completado la tarea.%n", nombre);
+            }
         }
     }
 }
